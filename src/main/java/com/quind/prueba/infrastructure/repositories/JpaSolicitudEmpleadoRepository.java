@@ -10,5 +10,4 @@ import java.util.List;
 @Repository
 public interface JpaSolicitudEmpleadoRepository extends JpaRepository<SolicitudEmpleado, Long>, SolicitudEmpleadoRepository {
     @Override
-    List<SolicitudEmpleado> findByTipoDocumentoAndNumeroDocumento(String tipoDocumento, String numeroDocumento);
-}
+    List<SolicitudEmpleado> findByDocumento_NombreAndNumeroDocumento(String tipoDocumento, String numeroDocumento);}

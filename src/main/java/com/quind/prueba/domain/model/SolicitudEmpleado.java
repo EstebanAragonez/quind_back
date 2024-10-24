@@ -15,28 +15,18 @@ public class SolicitudEmpleado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "id_solicitud", nullable = false)
-    private TipoSolicitud tipoSolicitud;
-
-    @ManyToOne
-    @JoinColumn(name = "id_documento", nullable = false)
-    private Documento documento;
-
-    @Column(name = "numero_documento", nullable = false)
+    @Column(name = "tipo_solicitud")
+    private String tipoSolicitud;
+    @Column(name = "tipo_documento")
+    private String tipoDocumento;
+    @Column(name = "numero_documento")
     private String numeroDocumento;
-
-    @Column(name = "nombre_empleado", nullable = false)
+    @Column(name = "nombre_empleado")
     private String nombreEmpleado;
-
-    @Column(name = "fecha_solicitud", nullable = false)
+    @Column(name = "fecha_solicitud")
     private LocalDate fechaSolicitud;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "estado", nullable = false)
-    private EstadoSolicitudEnum estado;
-
+    @Column(name = "estado")
+    private String estado;
     @Column(name = "comentarios")
     private String comentarios;
 }

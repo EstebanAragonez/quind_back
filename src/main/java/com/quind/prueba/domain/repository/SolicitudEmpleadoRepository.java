@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface SolicitudEmpleadoRepository {
     SolicitudEmpleado save(SolicitudEmpleado solicitud);
-    List<SolicitudEmpleado> findByDocumento_NombreAndNumeroDocumento(String documento, String numeroDocumento);
+    List<SolicitudEmpleado> findAll();
+    List<SolicitudEmpleado> findByTipoDocumentoAndNumeroDocumento(String documento, String numeroDocumento);
     Optional<SolicitudEmpleado> findById(Long id);
 }

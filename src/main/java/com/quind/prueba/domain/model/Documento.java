@@ -1,5 +1,6 @@
 package com.quind.prueba.domain.model;
 
+import com.quind.prueba.domain.model.enums.TipoDocumentoEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,6 @@ public class Documento {
     private Long id;
 
     @Column(name = "nombre", nullable = false)
-    private String nombre;
+    @Enumerated(EnumType.STRING)
+    private TipoDocumentoEnum nombre;
 }

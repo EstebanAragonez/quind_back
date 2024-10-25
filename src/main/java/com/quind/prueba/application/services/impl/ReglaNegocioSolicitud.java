@@ -28,9 +28,6 @@ public class ReglaNegocioSolicitud {
                 throw new BusinessException(Constantes.VALIDACION_VC_DNR);
             }
         } else if (tipoSolicitud.equals("AU")) {
-            long time = ChronoUnit.DAYS.between(solicitud.getFechaSolicitud(), fechaActual);
-            log.info(String.valueOf(time));
-
             if (ChronoUnit.DAYS.between(solicitud.getFechaSolicitud(), fechaActual) < 2) {
                 throw new BusinessException(Constantes.VALIDACION_AU);
             }

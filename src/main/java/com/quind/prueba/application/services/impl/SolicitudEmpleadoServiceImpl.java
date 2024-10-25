@@ -46,7 +46,7 @@ public class SolicitudEmpleadoServiceImpl implements SolicitudEmpleadoService {
         RespuestaCrearSolicitud resp = new RespuestaCrearSolicitud();
         SolicitudEmpleado solicitudEmpleado = new SolicitudEmpleado();
         solicitudEmpleado.setTipoDocumento(documento.get().getNombre().toString());
-        solicitudEmpleado.setEstado("NUEVO");
+        solicitudEmpleado.setEstado("NUEVA");
         solicitudEmpleado.setNombreEmpleado(empleado.get().getNombreCompleto());
         BeanUtils.copyProperties(solicitud, solicitudEmpleado);
         BeanUtils.copyProperties(solicitudEmpleado, resp);

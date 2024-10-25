@@ -58,8 +58,11 @@ public class SolicitudEmpleadoServiceImpl implements SolicitudEmpleadoService {
 
 
     public List<SolicitudEmpleado> obtenerSolicitudes(String tipoDocumento, String numeroDocumento) {
-
-        return solicitudEmpleadoRepository.findByTipoDocumentoAndNumeroDocumento(tipoDocumento, numeroDocumento);
+        List<SolicitudEmpleado> solicitudEmpleado =solicitudEmpleadoRepository.findByTipoDocumentoAndNumeroDocumento(tipoDocumento, numeroDocumento);
+        if (solicitudEmpleado.isEmpty()) {
+            throw new BusinessException("No se encuentran solicitudes con ese numero y tipo de documento");
+        }
+        return solicitudEmpleado;
     }
     public List<SolicitudEmpleado> findAll() {
 

@@ -3,7 +3,6 @@ package com.quind.prueba.application.services.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
@@ -268,20 +267,53 @@ class SolicitudEmpleadoServiceImplTest {
 
     /**
      * Test {@link SolicitudEmpleadoServiceImpl#obtenerSolicitudes(String, String)}.
+     * <p>
+     * Method under test:
+     * {@link SolicitudEmpleadoServiceImpl#obtenerSolicitudes(String, String)}
+     */
+    @Test
+    @DisplayName("Test obtenerSolicitudes(String, String)")
+    void testObtenerSolicitudes() {
+        // Arrange
+        when(
+                solicitudEmpleadoRepository.findByTipoDocumentoAndNumeroDocumento(Mockito.<String>any(), Mockito.<String>any()))
+                .thenThrow(new BusinessException("No se encuentran solicitudes con ese numero y tipo de documento"));
+
+        // Act and Assert
+        assertThrows(BusinessException.class, () -> solicitudEmpleadoServiceImpl
+                .obtenerSolicitudes("alice.liddell@example.org", "alice.liddell@example.org"));
+        verify(solicitudEmpleadoRepository).findByTipoDocumentoAndNumeroDocumento(eq("alice.liddell@example.org"),
+                eq("alice.liddell@example.org"));
+    }
+
+    /**
+     * Test {@link SolicitudEmpleadoServiceImpl#obtenerSolicitudes(String, String)}.
      * <ul>
-     *   <li>Then return Empty.</li>
+     *   <li>Then return {@link ArrayList#ArrayList()}.</li>
      * </ul>
      * <p>
      * Method under test:
      * {@link SolicitudEmpleadoServiceImpl#obtenerSolicitudes(String, String)}
      */
     @Test
-    @DisplayName("Test obtenerSolicitudes(String, String); then return Empty")
-    void testObtenerSolicitudes_thenReturnEmpty() {
+    @DisplayName("Test obtenerSolicitudes(String, String); then return ArrayList()")
+    void testObtenerSolicitudes_thenReturnArrayList() {
         // Arrange
+        SolicitudEmpleado solicitudEmpleado = new SolicitudEmpleado();
+        solicitudEmpleado.setComentarios("No se encuentran solicitudes con ese numero y tipo de documento");
+        solicitudEmpleado.setEstado("No se encuentran solicitudes con ese numero y tipo de documento");
+        solicitudEmpleado.setFechaSolicitud(LocalDate.of(1970, 1, 1));
+        solicitudEmpleado.setId(1L);
+        solicitudEmpleado.setNombreEmpleado("No se encuentran solicitudes con ese numero y tipo de documento");
+        solicitudEmpleado.setNumeroDocumento("alice.liddell@example.org");
+        solicitudEmpleado.setTipoDocumento("alice.liddell@example.org");
+        solicitudEmpleado.setTipoSolicitud("No se encuentran solicitudes con ese numero y tipo de documento");
+
+        ArrayList<SolicitudEmpleado> solicitudEmpleadoList = new ArrayList<>();
+        solicitudEmpleadoList.add(solicitudEmpleado);
         when(
                 solicitudEmpleadoRepository.findByTipoDocumentoAndNumeroDocumento(Mockito.<String>any(), Mockito.<String>any()))
-                .thenReturn(new ArrayList<>());
+                .thenReturn(solicitudEmpleadoList);
 
         // Act
         List<SolicitudEmpleado> actualObtenerSolicitudesResult = solicitudEmpleadoServiceImpl
@@ -290,7 +322,7 @@ class SolicitudEmpleadoServiceImplTest {
         // Assert
         verify(solicitudEmpleadoRepository).findByTipoDocumentoAndNumeroDocumento(eq("alice.liddell@example.org"),
                 eq("alice.liddell@example.org"));
-        assertTrue(actualObtenerSolicitudesResult.isEmpty());
+        assertSame(solicitudEmpleadoList, actualObtenerSolicitudesResult);
     }
 
     /**
@@ -308,54 +340,13 @@ class SolicitudEmpleadoServiceImplTest {
         // Arrange
         when(
                 solicitudEmpleadoRepository.findByTipoDocumentoAndNumeroDocumento(Mockito.<String>any(), Mockito.<String>any()))
-                .thenThrow(new BusinessException("Mensaje"));
+                .thenReturn(new ArrayList<>());
 
         // Act and Assert
         assertThrows(BusinessException.class, () -> solicitudEmpleadoServiceImpl
                 .obtenerSolicitudes("alice.liddell@example.org", "alice.liddell@example.org"));
         verify(solicitudEmpleadoRepository).findByTipoDocumentoAndNumeroDocumento(eq("alice.liddell@example.org"),
                 eq("alice.liddell@example.org"));
-    }
-
-    /**
-     * Test {@link SolicitudEmpleadoServiceImpl#findAll()}.
-     * <ul>
-     *   <li>Then return Empty.</li>
-     * </ul>
-     * <p>
-     * Method under test: {@link SolicitudEmpleadoServiceImpl#findAll()}
-     */
-    @Test
-    @DisplayName("Test findAll(); then return Empty")
-    void testFindAll_thenReturnEmpty() {
-        // Arrange
-        when(solicitudEmpleadoRepository.findAll()).thenReturn(new ArrayList<>());
-
-        // Act
-        List<SolicitudEmpleado> actualFindAllResult = solicitudEmpleadoServiceImpl.findAll();
-
-        // Assert
-        verify(solicitudEmpleadoRepository).findAll();
-        assertTrue(actualFindAllResult.isEmpty());
-    }
-
-    /**
-     * Test {@link SolicitudEmpleadoServiceImpl#findAll()}.
-     * <ul>
-     *   <li>Then throw {@link BusinessException}.</li>
-     * </ul>
-     * <p>
-     * Method under test: {@link SolicitudEmpleadoServiceImpl#findAll()}
-     */
-    @Test
-    @DisplayName("Test findAll(); then throw BusinessException")
-    void testFindAll_thenThrowBusinessException() {
-        // Arrange
-        when(solicitudEmpleadoRepository.findAll()).thenThrow(new BusinessException("Mensaje"));
-
-        // Act and Assert
-        assertThrows(BusinessException.class, () -> solicitudEmpleadoServiceImpl.findAll());
-        verify(solicitudEmpleadoRepository).findAll();
     }
 
     /**
